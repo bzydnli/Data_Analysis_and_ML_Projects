@@ -3,8 +3,6 @@ Her proje, farklı veri setleri üzerinde veri temizleme, keşifsel analiz, gör
 
 Bu depoda yer alan projeler hem akademik çalışmalarımın hem de profesyonel veri analizi yolculuğumun bir parçasıdır.
 
-Amaç
-
 Bu portfolyonun temel hedefleri:
 
 * Gerçek veri setleri üzerinde kapsamlı EDA süreçlerini sergilemek
