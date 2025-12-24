@@ -1,96 +1,92 @@
-Route-Aware Slotting Optimization with Genetic Algorithm
+Route-Aware Slotting Optimization (Genetic Algorithm)
 
-Bu proje, depo operasyonlarında karşılaşılan slotting (yerleşim) problemini ele alarak, Genetik Algoritma (GA) tabanlı bir optimizasyon yaklaşımı önermektedir. Çalışmanın temel odağı, yalnızca depo içi yerleşimi iyileştirmek değil; yerleşim kararlarının rota (routing) performansı üzerindeki etkisini de açık biçimde ortaya koymaktır.
+Bu proje, depo operasyonlarında karşılaşılan slotting (raf yerleşimi) problemini ele alır ve Genetik Algoritma (GA) tabanlı bir optimizasyon yaklaşımı sunar. Amaç, yalnızca depo içi yerleşimi iyileştirmek değil; yerleşim kararlarının rota (routing) performansı üzerindeki etkisini de açık biçimde ortaya koymaktır.
 
-Problem Tanımı
+Projede Ne Yapılıyor?
 
-Depo operasyonlarında slotting problemi, ürünlerin depo içindeki raf veya lokasyonlara hangi düzenle yerleştirileceğinin belirlenmesini kapsar. Amaç genellikle sipariş toplama (order picking) süreçlerinde toplam operasyonel maliyeti ve süreyi minimize etmektir. Ürün sayısının ve olası yerleşim kombinasyonlarının hızla artması nedeniyle bu problem NP-hard sınıfında yer almaktadır.
+* Depo içindeki ürünler için optimize edilmiş bir raf yerleşimi oluşturuluyor
 
-Klasik slotting yaklaşımları çoğunlukla ürünlerin talep sıklığına veya basit mesafe ölçütlerine dayanır. Ancak bu yöntemler, sipariş toplama rotalarının yapısını ve zone (bölge) geçişlerini doğrudan dikkate almaz. Gerçek hayatta, özellikle çok zoneli depolarda, bir siparişin farklı zonelara yayılması operasyonel maliyeti ciddi biçimde artırmaktadır.
+* Genetik Algoritma kullanılarak rota ve zone geçişlerini dikkate alan bir maliyet fonksiyonu optimize ediliyor
 
-Bu çalışmada, rota duyarlı (route-aware) bir slotting yaklaşımı ele alınmış; toplam toplama mesafesi ile zone geçişleri arasında dengeli bir optimizasyon hedeflenmiştir.
+* Yerleşim ve rota kararlarının ayrı ayrı ve birlikte operasyonel maliyete etkisi karşılaştırılıyor
 
-Amaç
+Neden Önemli?
 
-Bu projenin temel amaçları şunlardır:
+Çoğu slotting çalışması yalnızca: ürün popülerliği,talep sıklığı,mesafe gibi faktörlere odaklanır.
 
-Sipariş toplama rotalarına bağlı toplam maliyeti minimize etmek
+Bu projede ise: zone geçişleri, rota davranışı, yerleşim–rota entegrasyonu birlikte ele alınmaktadır. Bu yaklaşım, gerçek depo operasyonlarında karşılaşılan karmaşıklığı daha iyi yansıtır.
 
-Aşırı zone geçişlerini ceza terimleri aracılığıyla sınırlandırmak
+Kullanılan Yaklaşım
+🔹 Genetik Algoritma
 
-Yerleşim (slotting) ve rota (routing) kararlarının birlikte ele alınmasının operasyonel etkisini göstermek
+Her kromozom bir ürün–raf yerleşimini temsil eder
 
-Yöntem
-Genetik Algoritma (GA)
+Amaç fonksiyonu; mesafe maliyeti, zone içi dağılım, zone geçiş cezası bileşenlerinden oluşur
 
-Slotting problemi, geniş çözüm uzayı ve kısıt yapısı nedeniyle klasik deterministik yöntemlerle etkin biçimde çözülememektedir. Bu nedenle sezgisel ve olasılıksal bir arama yöntemi olan Genetik Algoritma tercih edilmiştir.
+Çaprazlama ve mutasyon ile keşif–yoğunlaşma dengesi sağlanır
 
-GA kapsamında:
+🔹 Routing Stratejileri
 
-Her kromozom, ürünlerin slotlara atanma düzenini temsil eder
+Projede üç farklı senaryo karşılaştırılmıştır:
 
-Amaç fonksiyonu;
+Human-like Baseline
+Zone sıralı, ancak zone içi rastgele yürüyüş (gerçekçi ama verimsiz)
 
-mesafe bazlı maliyet
+GA Slotting + Basit Rota
+Depo optimize, ancak rota farkındalığı yok
 
-zone içi dağılım cezası
+GA Slotting + Zone-Aware Routing (Önerilen)
+Yerleşim ve rota kararlarının entegre edildiği yapı
 
-ardışık zone geçiş cezası
-bileşenlerinden oluşur
+Öne Çıkan Sonuçlar
 
-Çaprazlama ve mutasyon operatörleri ile keşif–yoğunlaşma dengesi sağlanır
+* GA tabanlı yerleşim, baseline çözüme kıyasla ölçülebilir iyileşme sağlamaktadır
 
-Deney Senaryoları
+* En büyük operasyonel kazanç, yerleşim ve rota kararlarının birlikte optimize edilmesiyle elde edilmiştir
 
-Çalışmada, yerleşim ve rota kararlarının etkisini ayırt edebilmek amacıyla üç ana senaryo değerlendirilmiştir:
+* Mutasyon oranı ve zone ceza ağırlığı için yapılan duyarlılık analizleri, yöntemin kararlı ve sağlam davrandığını göstermektedir
 
-1. Human-like Baseline (Gerçek Operasyonel Davranış)
+Yapılan Analizler
 
-Personelin zoneları sırayla gezdiği, ancak zone içi ürün sırasının rastgele olduğu sezgisel bir yürüyüş modeli.
+* Baseline vs GA karşılaştırması
 
-2. GA Slotting + Rota Farkındalığı Olmayan Yürüyüş (GA Baseline)
+* Rota davranışı görsel analizi
 
-Depo yerleşimi GA ile optimize edilmiştir; ancak rota belirleme aşamasında zone bilgisi dikkate alınmamıştır.
+* Mutation rate duyarlılık analizi
 
-3. GA Slotting + Zone-Aware Greedy Routing (Önerilen Yöntem)
+* Zone transition weight duyarlılık analizi
 
-GA ile optimize edilmiş yerleşimin, zone farkındalıklı greedy bir rota stratejisi ile birlikte kullanıldığı senaryo.
 
-Tüm senaryolar aynı rota maliyet fonksiyonu ile değerlendirilmiştir.
 
-Deney Sonuçları
+Kullanılan Teknolojiler
 
-Elde edilen sonuçlar şu bulguları ortaya koymaktadır:
+* Python
 
-İnsan benzeri sezgisel rota en yüksek maliyeti üretmektedir
+* NumPy, Pandas
 
-GA tabanlı yerleşim, rota farkındalığı olmadan kullanıldığında sınırlı bir iyileşme sağlamaktadır
+* Matplotlib
 
-En düşük operasyonel maliyet, yerleşim ve rota kararlarının entegre edildiği önerilen yaklaşımda elde edilmiştir
+* Sezgisel optimizasyon (Genetic Algorithm)
 
-Bu durum, depo operasyonlarında yalnızca slotting optimizasyonunun yeterli olmadığını, rota stratejilerinin de kritik rol oynadığını göstermektedir.
+Kimler İçin?
 
-Duyarlılık (Sensitivity) Analizleri
-Mutation Rate Analizi
+* Optimizasyon ve sezgisel algoritmalarla ilgilenenler
 
-Farklı mutasyon oranları için birden fazla bağımsız koşum gerçekleştirilmiş; ortalama maliyet ve standart sapma değerleri incelenmiştir. Orta düzey mutasyon oranlarının, çözüm kalitesi ve kararlılık açısından en dengeli sonuçları verdiği gözlemlenmiştir.
+* Depo / lojistik problemleri üzerine çalışanlar
 
-Zone Transition Weight Analizi
+* ML & OR (Operations Research) portfolyosu oluşturmak isteyenler
 
-Zone geçiş cezasının ağırlığı artırıldıkça çözüm kalitesinin bozulduğu tespit edilmiştir. Orta düzey ceza ağırlıkları arama sürecini yönlendirirken, aşırı yüksek değerler keşfi ciddi biçimde kısıtlamaktadır.
+* Yüksek lisans / araştırma projeleri için örnek arayanlar
 
-Bu analizler, önerilen yöntemin geniş bir parametre aralığında kararlı davrandığını göstermektedir.
+Geliştirme Fikirleri
 
-Sonuç
+* Çok amaçlı optimizasyon (multi-objective GA)
 
-Bu çalışma, GA tabanlı slotting yaklaşımının depo yerleşimini iyileştirdiğini; ancak asıl operasyonel kazanımın, yerleşim kararlarının zone farkındalıklı rota stratejileri ile birlikte ele alınması durumunda elde edildiğini ortaya koymaktadır. Ayrıca yapılan duyarlılık analizleri, yöntemin pratik uygulamalar için sağlam ve güvenilir bir optimizasyon çerçevesi sunduğunu göstermektedir.
+* Gerçek zamanlı sipariş akışı senaryoları
 
-Gelecek Çalışmalar
+* Öğrenmeye dayalı rota stratejileri (RL)
 
-Çok amaçlı (multi-objective) optimizasyon yaklaşımları
+* Gerçek depo verileri ile saha testi
 
-Dinamik sipariş akışlarını içeren senaryolar
-
-Öğrenmeye dayalı rota stratejileri (RL entegrasyonu)
-
-Gerçek depo verileri ile saha doğrulaması
+Not:
+Bu proje, akademik bir çalışma mantığıyla geliştirilmiş olup portfolyo amaçlı olarak paylaşılmaktadır. Kod ve deney yapısı, genişletilmeye ve farklı senaryolara uyarlanmaya uygundur.
